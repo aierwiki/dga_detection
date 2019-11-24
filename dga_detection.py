@@ -8,8 +8,6 @@ import numpy as np
 import pandas as pd
 
 
-# In[3]:
-
 
 def get_malicious():
     import re
@@ -20,8 +18,6 @@ def get_malicious():
     return df_malicious
 
 
-# In[4]:
-
 
 def get_benign():
     df_benign = pd.read_csv('./data/top-1m.csv', index_col = 0, header = None)
@@ -29,8 +25,6 @@ def get_benign():
     df_benign['Label'] = 'benign'
     return df_benign
 
-
-# In[11]:
 
 
 def prepare_data():
@@ -41,15 +35,6 @@ def prepare_data():
     df_data['Target'] = df_data['Label'].map(lambda x : 0 if x == 'benign' else 1)
     df_data['Domain'] = df_data['Domain'].map(lambda x : tldextract.extract(x).domain)
     return df_data
-
-
-# In[ ]:
-
-
-df_data = prepare_data()
-
-
-# In[74]:
 
 
 def make_data(df_data):
@@ -71,35 +56,6 @@ def make_data(df_data):
 
 # In[76]:
 
-
-X_train, X_test, y_train, y_test, word_index = make_data(df_data)
-
-
-# In[77]:
-
-
-from keras.layers import Embedding, LSTM, Dense, Dropout, Activation
-
-
-# In[68]:
-
-
-from keras.models import Sequential
-
-
-# In[70]:
-
-
-import keras.backend as K
-
-
-# In[62]:
-
-
-get_ipython().run_line_magic('pinfo', 'LSTM')
-
-
-# In[85]:
 
 
 def build_model(words_num, max_length, feature_num):
@@ -146,9 +102,14 @@ def train(X_train, X_test, y_train, y_test, word_index):
 
 
 # In[ ]:
+def main():
+    df_data = prepare_data()
+    X_train, X_test, y_train, y_test, word_index = make_data(df_data)
+    train(X_train, X_test, y_train, y_test, word_index)
 
 
-train(X_train, X_test, y_train, y_test, word_index)
+if __name__ == '__main__':
+    main()
 
 
 # In[ ]:
